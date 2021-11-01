@@ -34,7 +34,7 @@ except:
 has_selected_game = False
 
 while not has_selected_game:
-    formatted = "\n".join([*[game[0] for game in games_list], RENEW_CACHE_STR])
+    formatted = "\n".join([*[game[0] for game in games_list], "", RENEW_CACHE_STR])
 
     res = subprocess.getoutput(
         'echo "' + formatted + f'" | rofi -i -dmenu -p {LAUNCH_STR}'
