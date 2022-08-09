@@ -17,7 +17,6 @@ def json2list(j):
 
 def renew_cache():
     j = os.popen("lutris -ojl").read()
-
     with open(FILELOCATION, "w") as f:
         f.write(j)
     return json2list(j)
@@ -27,25 +26,20 @@ games_list = []
 try:
     with open(FILELOCATION, "r") as f:
         games_list = json2list(f.read())
-
 except:
     games_list = renew_cache()
 
-has_selected_game = False
 
-while not has_selected_game:
+while True:
     formatted = "\n".join([*[game[0] for game in games_list], "", RENEW_CACHE_STR])
-
     res = subprocess.getoutput(
         'echo "' + formatted + f'" | rofi -i -dmenu -p {LAUNCH_STR}'
     )
     if res == RENEW_CACHE_STR:
         games_list = renew_cache()
+        continue
 
     for game in games_list:
         if res == game[0]:
             subprocess.Popen(["lutris", "lutris:rungameid/" + str(game[1])])
-            has_selected_game = True
-            break
-    if res == "":
-        break
+    break
